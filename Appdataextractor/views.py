@@ -4,7 +4,7 @@ from .models import BikeStation
 from django.http import JsonResponse
 from .utils import obtener_informacion_total, guardar_informacion_json
 import json
-from .models import Informacion
+from .models import Sancionario
 
 def obtener_informacion_api():
     url = 'https://api.citybik.es/v2/networks/bikerio'
@@ -57,7 +57,7 @@ def obtener_informacion_pagina(request):
     guardar_informacion_json(informacion, './archivo.json')
 
     for datos in informacion:
-       informacion_modelo = Informacion()
+       informacion_modelo = Sancionario()
        informacion_modelo.id = datos['#']
        informacion_modelo.expediente = datos['Expediente']
        informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']

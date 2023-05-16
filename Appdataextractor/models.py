@@ -14,15 +14,31 @@ class BikeStation(models.Model):
 
 
 
-class Informacion(models.Model):
-    id = models.CharField(max_length=10, primary_key=True)
-    expediente = models.CharField(max_length=20)
+
+
+class Sancionario(models.Model):
+    expediente = models.CharField(max_length=50)
     unidad_fiscalizable = models.CharField(max_length=200)
     nombre_razon_social = models.CharField(max_length=200)
     categoria = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
-    detalle = models.CharField(max_length=100)
+    detalle = models.TextField()
 
     def __str__(self):
-        return self.id
+        return self.expediente
+
+    def save(self, *args, **kwargs):
+        # Validar y ajustar los valores antes de guardar
+        if len(self.unidad_fiscalizable) > 200:
+            self.unidad_fiscalizable = self.unidad_fiscalizable[:200]
+        if len(self.nombre_razon_social) > 200:
+            self.nombre_razon_social = self.nombre_razon_social[:200]
+        if len(self.categoria) > 100:
+            self.categoria = self.categoria[:100]
+        if len(self.region) > 100:
+            self.region = self.region[:100]
+        if len(self.estado) > 100:
+            self.estado = self.estado[:100]
+        # Llamar al método save() original para guardar los datos modificados
+        super().save(*args, **kwargs)

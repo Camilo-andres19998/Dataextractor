@@ -1,4 +1,5 @@
 import requests
+from django.shortcuts import render
 from .models import BikeStation
 from django.http import JsonResponse
 
@@ -34,3 +35,12 @@ def obtener_informacion(request):
         'bike_stations': list(bike_stations.values()),
     }
     return JsonResponse(data)
+
+
+def ver_informacion(request):
+    bike_stations = BikeStation.objects.order_by('id')
+    
+    data = {
+        'bike_stations': bike_stations
+    }
+    return render(request, 'bikerio.html', data)

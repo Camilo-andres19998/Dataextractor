@@ -2,7 +2,9 @@ import requests
 from django.shortcuts import render
 from .models import BikeStation
 from django.http import JsonResponse
-from .utils import obtener_informacion_total,guardar_informacion_json
+from .utils import obtener_informacion_total, guardar_informacion_json
+import json
+from .models import Informacion
 
 def obtener_informacion_api():
     url = 'https://api.citybik.es/v2/networks/bikerio'
@@ -47,20 +49,18 @@ def ver_informacion(request):
     return render(request, 'bikerio.html', data)
 
 
-def paginas_view(request):
-   
-   url = 'https://snifa.sma.gob.cl/Sancionatorio/Resultado'
-
-   informacion_total = obtener_informacion_total(url)
-
-   archivo_json = 'informacion_paginas.json'
-   guardar_informacion_json(informacion_total, archivo_json)
 
 
+def obtener_informacion_pagina(request):
+    url = 'https://snifa.sma.gob.cl/Sancionatorio/Resultado'
+    informacion = obtener_informacion_total(url)
+    guardar_informacion_json(informacion, './archivo.json')
 
-   context = {
-        'informacion': informacion_total,
-        'archivo_json': archivo_json,
-    }
-   
-   return render(request,'tabla.html', context)
+    for datos in informacion:
+        informacion_modelo = Informacion()
+        informacion_modelo.campo1 = datos['campo1']
+        informacion_modelo.campo2 = datos['campo2']
+        # Asignar más campos según los datos del modelo
+        informacion_modelo.save()
+
+    return render(request, 'informacion.html', {'informacion': informacion})

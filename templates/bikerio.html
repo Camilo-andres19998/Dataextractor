@@ -5,47 +5,39 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container my-2">
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="table-responsive">
-                    <table id="datatable_bike" class="table table-bordered">
-                        <caption>
-                            
-                        </caption>
-                        <thead>
-                            <tr>
-                                <th class="centered">#</th>
-                                <th>Name</th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
-                                <th>Free Bikes</th>
-                                <th>Empty Slots</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody_users">
-                            {% for bike_station in bike_stations %}
-                                <tr>
-                                    <td>{{ bike_station.id }}</td>
-                                    <td>{{ bike_station.name }}</td>
-                                    <td>{{ bike_station.latitude }}</td>
-                                    <td>{{ bike_station.longitude }}</td>
-                                    <td>{{ bike_station.free_bikes }}</td>
-                                    <td>{{ bike_station.empty_slots }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="table-responsive">
+                <table id="datatable_bike" class="table table-bordered table-striped table-hover">
+                    <caption>
+                        <!-- Aquí puedes agregar una descripción de la tabla si lo deseas -->
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="centered">#</th>
+                            <th>Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Free Bikes</th>
+                            <th>Empty Slots</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody_users">
+                        {% for bike_station in bike_stations %}
+                        <tr>
+                            <td>{{ bike_station.id }}</td>
+                            <td>{{ bike_station.name }}</td>
+                            <td>{{ bike_station.latitude }}</td>
+                            <td>{{ bike_station.longitude }}</td>
+                            <td>{{ bike_station.free_bikes }}</td>
+                            <td>{{ bike_station.empty_slots }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block script %}
-    <script>
-        $(document).ready(function() {
-            $('#datatable_bike').DataTable();
-        });
-    </script>
+</div>
 {% endblock %}

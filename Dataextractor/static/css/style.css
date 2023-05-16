@@ -1,42 +1,43 @@
-body {
-    background: #efd5a8;
-    background: -webkit-linear-gradient(to right, #efd5a8, #efd5a8);
-    background: linear-gradient(to right, #efd5a8, #efd5a8);
-}
 
+
+body {
+    background: #6b490f;
+    background: -webkit-linear-gradient(to right, #6b490f, #6b490f);
+    background: linear-gradient(to right, #e19b59, #ebb75e);
+}
 .centered {
     text-align: center !important;
     vertical-align: middle !important;
 }
 
 table {
-    background-color: white;
-    text-align: left;
+    width: 90%;
     border-collapse: collapse;
-    width: 100%;
-}
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f6f6;
 
+}
 
 th,
 td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #cdcdcd;
 }
 
 th {
     background-color: #f9f9f9;
     font-weight: bold;
-    color: #555555;
+    color: #9d9999;
     text-transform: uppercase;
 }
 
 tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: #363535;
 }
 
 tr:hover {
-    background-color: #f0f0f0;
+    background-color: #363535;
 }
 
 .table-container {
@@ -55,5 +56,5 @@ tr:hover {
 
 .dataTables_wrapper .dataTables_filter label input[type="search"] {
     background-color: #fff;
-    color: #555555;
+   
 }

@@ -13,9 +13,16 @@ class BikeStation(models.Model):
         return self.name
 
 
-from django.db import models
 
 class Informacion(models.Model):
-    campo1 = models.CharField(max_length=100)
-    campo2 = models.CharField(max_length=100)
-    # Añadir más campos según sea necesario
+    id = models.CharField(max_length=10, primary_key=True)
+    expediente = models.CharField(max_length=20)
+    unidad_fiscalizable = models.CharField(max_length=200)
+    nombre_razon_social = models.CharField(max_length=200)
+    categoria = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
+    detalle = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.id

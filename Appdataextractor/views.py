@@ -57,10 +57,15 @@ def obtener_informacion_pagina(request):
     guardar_informacion_json(informacion, './archivo.json')
 
     for datos in informacion:
-        informacion_modelo = Informacion()
-        informacion_modelo.campo1 = datos['campo1']
-        informacion_modelo.campo2 = datos['campo2']
-        # Asignar más campos según los datos del modelo
-        informacion_modelo.save()
+       informacion_modelo = Informacion()
+       informacion_modelo.id = datos['#']
+       informacion_modelo.expediente = datos['Expediente']
+       informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']
+       informacion_modelo.nombre_razon_social = datos['Nombre razón social']
+       informacion_modelo.categoria = datos['Categoría']
+       informacion_modelo.region = datos['Región']
+       informacion_modelo.estado = datos['Estado']
+       informacion_modelo.detalle = datos['Detalle']
+       informacion_modelo.save()
 
-    return render(request, 'informacion.html', {'informacion': informacion})
+    return render(request, 'tabla.html', {'informacion': informacion})

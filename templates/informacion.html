@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Información de Bike Stations</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Información de Bike Stations</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Bicicletas Disponibles</th>
+                    <th>Plazas Vacías</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bike_station in bike_stations %}
+                <tr>
+                    <td>{{ bike_station.name }}</td>
+                    <td>{{ bike_station.latitude }}</td>
+                    <td>{{ bike_station.longitude }}</td>
+                    <td>{{ bike_station.free_bikes }}</td>
+                    <td>{{ bike_station.empty_slots }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

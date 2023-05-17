@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .utils import obtener_informacion_total, guardar_informacion_json
 import json
 from .models import Sancionario_info
+import os
 
 def obtener_informacion_api():
     url = 'https://api.citybik.es/v2/networks/bikerio'
@@ -57,7 +58,7 @@ def obtener_informacion_pagina(request):
     try:
         informacion = obtener_informacion_total(url)
 
-        # Reemplazar las claves con tildes por versiones sin tildes elementos del diccionario
+        # Reemplazar las claves con tildes por versiones sin tildes en los elementos del diccionario
         for datos in informacion:
             if 'Nombre razón social' in datos:
                 datos['Nombre razon social'] = datos.pop('Nombre razón social')
@@ -66,8 +67,18 @@ def obtener_informacion_pagina(request):
             if 'Región' in datos:
                 datos['Region'] = datos.pop('Región')
 
-        # Generar el archivo JSON 
-        with open('./archivo.json', 'w', encoding='utf-8') as file:
+        # Ruta de la carpeta donde se almacenará el archivo JSON
+        carpeta = 'json'
+
+        # Crear la carpeta si no existe
+        if not os.path.exists(carpeta):
+            os.makedirs(carpeta)
+
+        # Ruta completa del archivo JSON
+        ruta_json = os.path.join(carpeta, 'archivo.json')
+
+        # Guardar el archivo JSON con la codificación adecuada
+        with open(ruta_json, 'w', encoding='utf-8') as file:
             json.dump(informacion, file, ensure_ascii=False)
 
         for datos in informacion:

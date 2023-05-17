@@ -9,9 +9,9 @@ Se ha creado un script utilizando las librerías BeautifulSoup o Selenium para e
 la información de la tabla. El script recorre todas las páginas y crea un archivo .json con la información obtenida. Además, se genera un modelo para guardar estos datos.
 
 ## Requisitos
-
-- Python 3.x
-- PostgreSQL (versión X.X)
+- Django 4.1.7
+- Python 3.10.9
+- PostgreSQL (15.3)
 - Paquetes adicionales:
   - requests
   - beautifulsoup

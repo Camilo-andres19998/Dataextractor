@@ -20,4 +20,4 @@ class SancionarioAdmin(admin.ModelAdmin):
 
 
 admin.site.register(BikeStation, BikeStationAdmin)
-admin.site.register(Sancionario, SancionarioAdmin)
+admin.site.register(Sancionario_info, SancionarioAdmin)

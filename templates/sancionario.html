@@ -1,0 +1,49 @@
+{% extends 'base_sancionario.html' %}
+
+{% block title %}
+  Información de sistema nacional 
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="table-responsive">
+                <table id="datatable_sancionario" class="table table-bordered table-striped table-hover">
+                    <caption>
+                        <!-- Aquí puedes agregar una descripción de la tabla si lo deseas -->
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="centered">#</th>
+                            <th>Expediente</th>
+                            <th>Unidad Fiscalizable</th>
+                            <th>Nombre razón social</th>
+                            <th>Categoría</th>
+                            <th>Región</th>
+                            <th>Estado</th>
+                            <th>Detalle</th>
+                            <th>URL Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody_users">
+                        {% for informacion_obj in informacion %}
+                        <tr>
+                            <td>{{ informacion_obj.id }}</td>
+                            <td>{{ informacion_obj.expediente }}</td>
+                            <td>{{ informacion_obj.unidad_fiscalizable }}</td>
+                            <td>{{ informacion_obj.nombre_razon_social }}</td>
+<td>{{ informacion_obj.categoria }}</td>
+<td>{{ informacion_obj.region }}</td>
+<td>{{ informacion_obj.estado }}</td>
+<td>{{ informacion_obj.detalle }}</td>
+<td><a href="{{ informacion_obj.url_detalle }}">Ver detalles</a></td> 
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

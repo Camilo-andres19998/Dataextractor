@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-
 import json
 
 def obtener_informacion_tabla(url):
@@ -9,7 +8,7 @@ def obtener_informacion_tabla(url):
 
     tabla = soup.find('table')
     if tabla is None:
-        return None  # No se encontró la tabla, devuelve None
+        return None
 
     encabezados = [th.text.strip() for th in tabla.find_all('th')]
 
@@ -29,19 +28,16 @@ def obtener_informacion_tabla(url):
 def obtener_informacion_total(url):
     informacion_total = []
 
-    # Realizar la solicitud HTTP GET a la URL
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Obtener el número de páginas disponibles
     paginacion = soup.find('ul', class_='pagination')
     if paginacion is None:
-        numero_paginas = 1  # Asignar 1 como valor predeterminado
+        numero_paginas = 1
     else:
         paginas = paginacion.find_all('li')
         numero_paginas = len(paginas) - 2
 
-    # Obtener la información de todas las páginas
     for i in range(1, numero_paginas + 1):
         url_pagina = url + '?pagina=' + str(i)
         informacion_pagina = obtener_informacion_tabla(url_pagina)
@@ -51,5 +47,5 @@ def obtener_informacion_total(url):
     return informacion_total
 
 def guardar_informacion_json(informacion, archivo):
-    with open(archivo, 'w') as f:
-        json.dump(informacion, f, indent=4)
+    with open(archivo, 'w', encoding='utf-8') as file:
+        json.dump(informacion, file, indent=4, ensure_ascii=False)

@@ -4,17 +4,13 @@ from .models import BikeStation
 from django.http import JsonResponse
 from .utils import obtener_informacion_total, guardar_informacion_json
 import json
-from .models import Sancionario
+from .models import Sancionario_info
 
 def obtener_informacion_api():
     url = 'https://api.citybik.es/v2/networks/bikerio'
     response = requests.get(url)
-    
-    if response.status_code == 200:
-        data = response.json()
-        return data.get('network', {}).get('stations', [])
-    
-    return None
+    data = response.json()
+    return data.get('network', {}).get('stations', [])
 
 
 def guardar_informacion_en_modelo():
@@ -22,17 +18,18 @@ def guardar_informacion_en_modelo():
     
     if informacion_api is not None:
         for item in informacion_api:
-            instancia = BikeStation(
-                name=item['name'],
-                latitude=item['latitude'],
-                longitude=item['longitude'],
-                free_bikes=item['free_bikes'],
-                empty_slots=item['empty_slots']
-            )
-            instancia.save()
+            existente = BikeStation.objects.filter(name=item.get('name')).exists()
+            if not existente:
+                instancia = BikeStation.objects.create(
+                    name=item.get('name', ''),
+                    latitude=item.get('latitude'),
+                    longitude=item.get('longitude'),
+                    free_bikes=item.get('free_bikes'),
+                    empty_slots=item.get('empty_slots')
+                )
 
-def obtener_informacion(request):
-    guardar_informacion_en_modelo()
+
+def obtener_informacion_bikerio(request):
     bike_stations = BikeStation.objects.all()
     data = {
         'bike_stations': list(bike_stations.values()),
@@ -41,43 +38,55 @@ def obtener_informacion(request):
 
 
 def ver_informacion(request):
-    bike_stations = BikeStation.objects.order_by('id')
-    
+    guardar_informacion_en_modelo()
+    bike_stations = BikeStation.objects.order_by('-id')
     data = {
         'bike_stations': bike_stations
     }
     return render(request, 'bikerio.html', data)
 
 
+def obtener_informacion(request):
+    informacion = Sancionario_info.objects.all()
+    return render(request, 'sancionario.html', {'informacion': informacion})
 
 
 def obtener_informacion_pagina(request):
     url = 'https://snifa.sma.gob.cl/Sancionatorio/Resultado'
-    informacion = obtener_informacion_total(url)
+    
+    try:
+        informacion = obtener_informacion_total(url)
 
-    # Reemplazar las claves con tildes por versiones sin tildes en cada elemento del diccionario
-    for datos in informacion:
-        if 'Nombre razón social' in datos:
-            datos['Nombre razon social'] = datos.pop('Nombre razón social')
-        if 'Categoría' in datos:
-            datos['Categoria'] = datos.pop('Categoría')
-        if 'Región' in datos:
-            datos['Region'] = datos.pop('Región')
+        # Reemplazar las claves con tildes por versiones sin tildes elementos del diccionario
+        for datos in informacion:
+            if 'Nombre razón social' in datos:
+                datos['Nombre razon social'] = datos.pop('Nombre razón social')
+            if 'Categoría' in datos:
+                datos['Categoria'] = datos.pop('Categoría')
+            if 'Región' in datos:
+                datos['Region'] = datos.pop('Región')
 
-    # Guardar el archivo JSON con la codificación adecuada
-    with open('./archivo.json', 'w', encoding='utf-8') as file:
-        json.dump(informacion, file, ensure_ascii=False)
+        # Generar el archivo JSON 
+        with open('./archivo.json', 'w', encoding='utf-8') as file:
+            json.dump(informacion, file, ensure_ascii=False)
 
-    for datos in informacion:
-        informacion_modelo = Sancionario()
-        informacion_modelo.id = datos['#']
-        informacion_modelo.expediente = datos['Expediente']
-        informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']
-        informacion_modelo.nombre_razon_social = datos.get('Nombre razon social', '')
-        informacion_modelo.categoria = datos.get('Categoria', '')
-        informacion_modelo.region = datos.get('Region', '')
-        informacion_modelo.estado = datos['Estado']
-        informacion_modelo.detalle = datos['Detalle']
-        informacion_modelo.save()
-
-    return render(request, 'tabla.html', {'informacion': informacion})
+        for datos in informacion:
+            informacion_modelo = Sancionario_info()
+            
+            informacion_modelo.id = datos['#']
+            informacion_modelo.expediente = datos['Expediente']
+            informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']
+            informacion_modelo.nombre_razon_social = datos.get('Nombre razon social', '')
+            informacion_modelo.categoria = datos.get('Categoria', '')
+            informacion_modelo.region = datos.get('Region', '')
+            informacion_modelo.estado = datos['Estado']
+            informacion_modelo.detalle = datos['Detalle']
+            if 'Ver detalles' in datos['Detalle']:
+                informacion_modelo.url_detalle = 'https://snifa.sma.gob.cl/Sancionatorio/Ficha/3314'
+            informacion_modelo.save()
+    except requests.exceptions.RequestException as e:
+        print(f'Error en la solicitud HTTP: {e}')
+    except json.JSONDecodeError as e:
+        print(f'Error decodificando JSON: {e}')
+    
+    return obtener_informacion(request)

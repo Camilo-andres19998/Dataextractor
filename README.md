@@ -1,4 +1,4 @@
-# Nombre del Proyecto
+# Dataextractor
 
 Breve descripción o introducción al proyecto.
 
@@ -14,6 +14,7 @@ Breve descripción o introducción al proyecto.
 ## Instalación
 
 1. Clona el repositorio o descarga el código fuente.
+
 2. Crea un entorno virtual: `python -m venv env`
 3. Activa el entorno virtual:
    - En Windows: `.\env\Scripts\activate`
@@ -50,21 +51,11 @@ Breve descripción de la estructura de archivos y directorios del proyecto.
 - `config/`: Directorio que contiene la configuración del proyecto.
 - `app/`: Directorio que contiene la lógica y los modelos de la aplicación.
 
-## Contribución
 
-Si deseas contribuir a este proyecto, sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una rama para tu función/feature: `git checkout -b nombre-rama`.
-3. Realiza los cambios y realiza commits: `git commit -m "Descripción de los cambios"`.
-4. Sube tus cambios a tu repositorio: `git push origin nombre-rama`.
-5. Abre una Pull Request en este repositorio.
 
 ## Licencia
 
 Indica la licencia bajo la cual se distribuye el proyecto.
 
-## Contacto
 
-Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto con nosotros en [correo electrónico] o [sitio web].
 

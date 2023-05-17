@@ -1,6 +1,10 @@
 # Dataextractor
 
-Breve descripción o introducción al proyecto.
+Este proyecto consiste en una aplicación Django que utiliza dos fuentes de datos diferentes para obtener información relevante.
+
+La primera fuente es una API pública llamada https://api.citybik.es/v2/networks/bikerio. Se ha desarrollado una función que utiliza las librerías requests, urllib3 o aiohttp para obtener los datos de la API. La información obtenida se guarda en un modelo específico creado para este propósito.
+
+La segunda fuente de datos es una página web con una tabla de información ubicada en https://snifa.sma.gob.cl/Sancionatorio/Resultado. Se ha creado un script utilizando las librerías BeautifulSoup o Selenium para extraer la información de la tabla. El script recorre todas las páginas y crea un archivo .json con la información obtenida. Además, se genera un modelo para guardar estos datos.
 
 ## Requisitos
 

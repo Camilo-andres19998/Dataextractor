@@ -6,5 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('informacion/', include('Appdataextractor.urls')),
     path('', views.ver_informacion, name='ver_informacion'),
-    path('tabla/', views.obtener_informacion_pagina, name='obtener_informacion'),
+    path('sancionario/', views.obtener_informacion_pagina, name='obtener_informacion'),
 ]

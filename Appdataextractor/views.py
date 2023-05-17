@@ -54,18 +54,30 @@ def ver_informacion(request):
 def obtener_informacion_pagina(request):
     url = 'https://snifa.sma.gob.cl/Sancionatorio/Resultado'
     informacion = obtener_informacion_total(url)
-    guardar_informacion_json(informacion, './archivo.json')
+
+    # Reemplazar las claves con tildes por versiones sin tildes en cada elemento del diccionario
+    for datos in informacion:
+        if 'Nombre razón social' in datos:
+            datos['Nombre razon social'] = datos.pop('Nombre razón social')
+        if 'Categoría' in datos:
+            datos['Categoria'] = datos.pop('Categoría')
+        if 'Región' in datos:
+            datos['Region'] = datos.pop('Región')
+
+    # Guardar el archivo JSON con la codificación adecuada
+    with open('./archivo.json', 'w', encoding='utf-8') as file:
+        json.dump(informacion, file, ensure_ascii=False)
 
     for datos in informacion:
-       informacion_modelo = Sancionario()
-       informacion_modelo.id = datos['#']
-       informacion_modelo.expediente = datos['Expediente']
-       informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']
-       informacion_modelo.nombre_razon_social = datos['Nombre razón social']
-       informacion_modelo.categoria = datos['Categoría']
-       informacion_modelo.region = datos['Región']
-       informacion_modelo.estado = datos['Estado']
-       informacion_modelo.detalle = datos['Detalle']
-       informacion_modelo.save()
+        informacion_modelo = Sancionario()
+        informacion_modelo.id = datos['#']
+        informacion_modelo.expediente = datos['Expediente']
+        informacion_modelo.unidad_fiscalizable = datos['Unidad Fiscalizable']
+        informacion_modelo.nombre_razon_social = datos.get('Nombre razon social', '')
+        informacion_modelo.categoria = datos.get('Categoria', '')
+        informacion_modelo.region = datos.get('Region', '')
+        informacion_modelo.estado = datos['Estado']
+        informacion_modelo.detalle = datos['Detalle']
+        informacion_modelo.save()
 
     return render(request, 'tabla.html', {'informacion': informacion})

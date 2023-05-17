@@ -37,10 +37,15 @@ la información de la tabla. El script recorre todas las páginas y crea un arch
    - DATABASES = {
        'default': {
            'ENGINE': 'django.db.backends.postgresql',
+           
            'NAME': 'nombre_basedatos',
+           
            'USER': 'nombre_usuario',
+           
            'PASSWORD': 'contraseña',
+           
            'HOST': 'localhost',
+           
            'PORT': '5432',
        }
    }
